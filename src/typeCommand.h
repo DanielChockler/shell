@@ -9,21 +9,23 @@
 
 class TypeCommand : public Command {
 private:
-  static std::vector<std::filesystem::path> getFileNames(const std::string& path) {
-    std::vector<std::filesystem::path> fileNames {};
+  static std::vector<std::filesystem::directory_entry> getFileNames(const std::string& path) {
+    std::vector<std::filesystem::directory_entry> files {};
 
     Parser parser;
     std::vector<std::string> directories {parser.tokenise(path, ":")};
     
     for (const auto& directory : directories) {
-      for (const auto& file : std::filesystem::directory_iterator(directory)) {
-        if (file.is_regular_file()) {
-          fileNames.push_back(file.path());
+      if (std::filesystem::exists(directory) && std::filesystem::is_directory(directory)) {
+        for (const auto& file : std::filesystem::directory_iterator(directory)) {
+          if (file.is_regular_file()) {
+            files.push_back(file);
+          }
         }
       }
     }
 
-    return fileNames;
+    return files;
   }
 
 public:

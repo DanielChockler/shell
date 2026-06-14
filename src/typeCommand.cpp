@@ -19,10 +19,14 @@ int TypeCommand::execute(const std::vector<std::string>& args) {
       return 0;
     }
     
-    std::vector<std::filesystem::path> filenames {getFileNames(pathVar)};
-    for (auto& filePath : filenames) {
-      if (filePath.filename().string() == commandName) {
-        std::cout << commandName << " is " << filePath.string() << '\n';
+    namespace fs = std::filesystem;
+
+    std::vector<fs::directory_entry> files {getFileNames(pathVar)};
+    for (auto& file : files) {
+      fs::perms filePerms = file.status().permissions();
+      if (((filePerms & fs::perms::owner_exec) == fs::perms::none) && ((filePerms & fs::perms::group_exec) == fs::perms::none) && ((filePerms & fs::perms::others_exec) == fs::perms::none)) continue;
+      if (file.path().filename().string() == commandName) {
+        std::cout << commandName << " is " << file.path().string() << '\n';
         return 0;
       }
     }
