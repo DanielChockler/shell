@@ -14,6 +14,7 @@ private:
 public:
   CommandMapping();
 
+  static bool isBuiltin(const std::string& commandName);
   bool executeCommand(const std::string& commandName, const std::vector<std::string>& args, int& exitCode);
 };
 

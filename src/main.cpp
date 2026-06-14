@@ -27,8 +27,8 @@ int main() {
     
     if (ci.name == "exit") break;
 
-    bool builtIn {mapper.executeCommand(ci.name, ci.args, exitCode)};
+    bool validCommand {mapper.executeCommand(ci.name, ci.args, exitCode)};
 
-    if (!builtIn) std::cout << ci.name << ": not found\n";
+    if (!validCommand) std::cout << ci.name << ": not found\n";
  }
 }
