@@ -3,30 +3,18 @@
 
 #include "commands.h"
 #include "parser.h"
+#include <optional>
 #include <string>
 #include <vector>
 #include <filesystem>
 
+namespace fs = std::filesystem;
+
 class TypeCommand : public Command {
 private:
-  static std::vector<std::filesystem::directory_entry> getFileNames(const std::string& path) {
-    std::vector<std::filesystem::directory_entry> files {};
-
-    Parser parser;
-    std::vector<std::string> directories {parser.tokenise(path, ":")};
-    
-    for (const auto& directory : directories) {
-      if (std::filesystem::exists(directory) && std::filesystem::is_directory(directory)) {
-        for (const auto& file : std::filesystem::directory_iterator(directory)) {
-          if (file.is_regular_file()) {
-            files.push_back(file);
-          }
-        }
-      }
-    }
-
-    return files;
-  }
+  static std::vector<std::filesystem::directory_entry> getFiles(const std::string& path);
+  static bool isExecutableFile(const std::filesystem::perms& filePerms);
+  static std::optional<fs::directory_entry> isCommandInPath(std::string& commandName, const char* path);
 
 public:
   int execute(const std::vector<std::string>& args) override;
