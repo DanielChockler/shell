@@ -13,9 +13,10 @@ struct CommandInput {
 
 class Parser {
 private:
-  std::vector<std::string> tokenise(const std::string& rawInput, const std::string& delimiter);
 
 public:
+  std::vector<std::string> tokenise(const std::string& rawInput, const std::string& delimiter);
+
   Parser() = default;
   ~Parser() = default;
 
