@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <filesystem>
 #include <optional>
+#include <string>
 #include <vector>
 
 namespace fs = std::filesystem;
@@ -45,6 +46,10 @@ std::optional<fs::directory_entry> FileHandler::isCommandInDirectories(const std
   return { };
 }
 
-int FileHandler::executeCommandFile(fs::directory_entry file) const {
-  return std::system(file.path().c_str());
+int FileHandler::executeCommandFile(fs::directory_entry file, const std::vector<std::string>& args) const {
+  std::string fullCommand {file.path().string()};
+  for (const auto& arg : args) 
+    fullCommand += (arg + " ");
+  
+  return std::system(fullCommand.c_str());
 }

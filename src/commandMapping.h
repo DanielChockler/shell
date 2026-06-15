@@ -17,7 +17,7 @@ public:
 
   static bool isBuiltin(const std::string& commandName);
   bool executeCommand(const std::string& commandName, const std::vector<std::string>& args, int& exitCode);
-  bool executeCommandFile(const std::string& commandName, int& exitCode) const;
+  bool executeCommandFile(const std::string& commandName, const std::vector<std::string>& args, int& exitCode) const;
 };
 
 #endif

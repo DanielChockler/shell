@@ -5,8 +5,10 @@
 #include <cstdlib>
 #include <memory>
 #include <optional>
+#include <string>
 #include <unordered_set>
 #include <filesystem>
+#include <vector>
 
 CommandMapping::CommandMapping() {
   m_mapping["echo"] = std::make_unique<EchoCommand>();
@@ -21,7 +23,7 @@ bool CommandMapping::isBuiltin(const std::string &commandName) {
 bool CommandMapping::executeCommand(const std::string& commandName, const std::vector<std::string>& args, int& exitCode) {
   auto it = m_mapping.find(commandName);
   if (it == m_mapping.end()) {
-    if (executeCommandFile(commandName, exitCode)) return true;
+    if (executeCommandFile(commandName, args, exitCode)) return true;
     else return false;
   } else {
     exitCode = it->second->execute(args);
@@ -31,12 +33,12 @@ bool CommandMapping::executeCommand(const std::string& commandName, const std::v
 
 namespace fs = std::filesystem;
 
-bool CommandMapping::executeCommandFile(const std::string& commandName, int& exitCode) const {
+bool CommandMapping::executeCommandFile(const std::string& commandName, const std::vector<std::string>& args, int& exitCode) const {
   const char* path = std::getenv("PATH");
   FileHandler fileHandler(path);
   std::optional<fs::directory_entry> file {fileHandler.isCommandInDirectories(commandName)};
   if (file) {
-    exitCode = fileHandler.executeCommandFile(*file);
+    exitCode = fileHandler.executeCommandFile(*file, args);
     return true;
   } else return false;
 }
