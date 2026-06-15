@@ -48,7 +48,10 @@ std::optional<fs::directory_entry> FileHandler::isCommandInDirectories(const std
 
 int FileHandler::executeCommandFile(fs::directory_entry file, const std::vector<std::string>& args) const {
   std::string fullCommand {file.path().string()};
+  size_t nameBegin {fullCommand.find_last_of('/')};
+  if (nameBegin != std::string::npos) fullCommand = fullCommand.substr(nameBegin + 1);
   fullCommand += " ";
+
   for (const auto& arg : args) 
     fullCommand += (arg + " ");
   
