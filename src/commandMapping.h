@@ -2,6 +2,7 @@
 #define CMDMAP
 
 #include "commands.h"
+#include "fileHandler.h"
 #include <unordered_map>
 #include <string>
 #include <memory>
@@ -16,6 +17,7 @@ public:
 
   static bool isBuiltin(const std::string& commandName);
   bool executeCommand(const std::string& commandName, const std::vector<std::string>& args, int& exitCode);
+  bool executeCommandFile(const std::string& commandName, int& exitCode) const;
 };
 
 #endif

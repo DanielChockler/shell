@@ -1,5 +1,6 @@
 #include "fileHandler.h"
 #include "parser.h"
+#include <cstdlib>
 #include <filesystem>
 #include <optional>
 #include <vector>
@@ -34,7 +35,7 @@ bool FileHandler::isFileExecutable(const fs::directory_entry& file) const {
        (filePerms & fs::perms::others_exec) == fs::perms::none);
 }
 
-std::optional<fs::directory_entry> FileHandler::isCommandInDirectories(std::string& commandName) const {
+std::optional<fs::directory_entry> FileHandler::isCommandInDirectories(const std::string& commandName) const {
   std::vector<fs::directory_entry> files {getFiles()};
   for (auto& file : files) {
     if (file.path().filename().filename() == commandName && isFileExecutable(file))
@@ -42,4 +43,8 @@ std::optional<fs::directory_entry> FileHandler::isCommandInDirectories(std::stri
   }
 
   return { };
+}
+
+int FileHandler::executeCommandFile(fs::directory_entry file) const {
+  return std::system(file.path().c_str());
 }
