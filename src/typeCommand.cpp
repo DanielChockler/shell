@@ -1,6 +1,8 @@
 #include "typeCommand.h"
 #include "commandMapping.h"
+#include "fileHandler.h"
 #include <cstdlib>
+#include <optional>
 #include <string>
 #include <vector>
 #include <iostream>
@@ -55,7 +57,9 @@ int TypeCommand::execute(const std::vector<std::string>& args) {
       return 0;
     }
 
-    std::optional<fs::directory_entry> commandFile {isCommandInPath(commandName, pathVar)};
+    FileHandler fileHandler(pathVar);
+    std::optional<fs::directory_entry> commandFile {fileHandler.isCommandInDirectories(commandName)};
+
     if (commandFile) 
       std::cout << commandName << " is " << commandFile->path().string() << '\n';
     else
