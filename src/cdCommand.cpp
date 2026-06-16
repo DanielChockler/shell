@@ -16,7 +16,7 @@ int CdCommand::execute(const std::vector<std::string>& args) {
   fs::current_path(targetDir, ec);
 
   if (ec) {
-    std::cout << "cd: " << targetDir << ": No such file or directory.\n";
+    std::cout << "cd: " << targetDir << ": No such file or directory\n";
     return 1;
   }
 
