@@ -14,7 +14,7 @@ CommandInput Parser::parse(const std::string& rawInput) {
   return ci;
 }
 
-std::vector<std::string> Parser::tokenise(const std::string& rawInput, const std::string& delimiter) {
+std::vector<std::string> Parser::tokenise(const std::string& rawInput, const std::string& delimiter = " ") {
   if (delimiter.empty()) return std::vector<std::string> {rawInput};
   std::vector<std::string> tokens {};
   auto slow {0uz};
@@ -25,6 +25,13 @@ std::vector<std::string> Parser::tokenise(const std::string& rawInput, const std
     if (fast == std::string::npos) {
       tokens.push_back(std::move(rawInput.substr(slow)));
       break;
+    }
+    
+    // Ignore consecutive delimiters (hello    world -> hello world)
+    if (fast == slow) {
+      ++fast;
+      ++slow;
+      continue;
     }
   
     tokens.push_back(std::move(rawInput.substr(slow, fast - slow)));
