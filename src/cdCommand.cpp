@@ -1,4 +1,5 @@
 #include "cdCommand.h"
+#include <cstdlib>
 #include <filesystem>
 #include <iostream>
 #include <string>
@@ -11,6 +12,8 @@ int CdCommand::execute(const std::vector<std::string>& args) {
   if (args.size() > 1) return 1;
   
   std::string targetDir = args[0];
+  if (targetDir == "~") targetDir = getHomeDir();
+
   std::error_code ec;
 
   fs::current_path(targetDir, ec);
@@ -21,4 +24,9 @@ int CdCommand::execute(const std::vector<std::string>& args) {
   }
 
   return 0;
+}
+
+std::string CdCommand::getHomeDir() const {
+  const char* homeDir {getenv("HOME")};
+  return homeDir;
 }
