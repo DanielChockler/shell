@@ -2,6 +2,7 @@
 #include "echoCommand.h"
 #include "fileHandler.h"
 #include "typeCommand.h"
+#include "pwdCommand.h"
 #include <cstdlib>
 #include <memory>
 #include <optional>
@@ -13,10 +14,11 @@
 CommandMapping::CommandMapping() {
   m_mapping["echo"] = std::make_unique<EchoCommand>();
   m_mapping["type"] = std::make_unique<TypeCommand>();
+  m_mapping["pwd"]  = std::make_unique<PwdCommand>();
 }
 
 bool CommandMapping::isBuiltin(const std::string &commandName) {
-  static std::unordered_set<std::string> builtinCommands {"echo", "exit", "type"};
+  static std::unordered_set<std::string> builtinCommands {"echo", "exit", "type", "pwd"};
   return builtinCommands.contains(commandName);
 }
 
