@@ -10,9 +10,10 @@ namespace fs = std::filesystem;
 
 int CdCommand::execute(const std::vector<std::string>& args) {
   if (args.size() > 1) return 1;
-  
-  std::string targetDir = args[0];
-  if (targetDir == "~") targetDir = getHomeDir();
+
+  std::string targetDir;
+  if (args.size() > 0) targetDir = args[0];
+  if (targetDir == "~" || (args.size() == 0)) targetDir = getHomeDir();
 
   std::error_code ec;
 
