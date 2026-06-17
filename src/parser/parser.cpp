@@ -29,6 +29,8 @@ std::vector<std::string> Parser::tokenise(const std::string& rawInput, const std
       tokens.push_back(parseSingleQuote(rawInput.substr(slow), slow));
       fast = slow;
       ++slow;
+
+      if (slow >= rawInput.size() - 1) break;
     }
 
     fast = rawInput.find(delimiter, slow);
