@@ -1,6 +1,7 @@
 #ifndef PARSER
 #define PARSER
 
+#include <cstddef>
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -13,6 +14,7 @@ struct CommandInput {
 
 class Parser {
 private:
+  std::string parseSingleQuote(const std::string& input, size_t& index) const;
 
 public:
   std::vector<std::string> tokenise(const std::string& rawInput, const std::string& delimiter);
